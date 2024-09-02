@@ -1,7 +1,7 @@
-import React, { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { Frame } from "./Portal";
 import * as THREE from "three";
-import { PerspectiveCamera, useHelper } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 
 export function TwoCamerasInterchanged() {
   const camera1 = useCallback((camera: THREE.PerspectiveCamera) => {
@@ -18,8 +18,8 @@ export function TwoCamerasInterchanged() {
     camera2.current = camera;
   }, []);
 
-  useHelper(camera1, THREE.CameraHelper);
-  useHelper(camera2, THREE.CameraHelper);
+  // useHelper(camera1, THREE.CameraHelper);
+  // useHelper(camera2, THREE.CameraHelper);
 
   return (
     <>

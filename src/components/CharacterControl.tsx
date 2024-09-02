@@ -1,23 +1,21 @@
-import { useHelper, useKeyboardControls } from "@react-three/drei";
+import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import {
   CapsuleCollider,
   RapierRigidBody,
   RigidBody,
 } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Group, MathUtils, Object3DEventMap, Vector3 } from "three";
-import { degToRad } from "three/src/math/MathUtils.js";
 import { Player } from "./CharacterModel";
-import * as THREE from "three";
 
-const normalizeAngle = (angle) => {
+const normalizeAngle = (angle: any) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
   while (angle < -Math.PI) angle += 2 * Math.PI;
   return angle;
 };
 
-const lerpAngle = (start, end, t) => {
+const lerpAngle = (start: number, end: number, t: number) => {
   start = normalizeAngle(start);
   end = normalizeAngle(end);
 
