@@ -1,24 +1,18 @@
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import {
+  Box,
   Environment,
   KeyboardControls,
-  PointerLockControls,
+  OrthographicCamera,
 } from "@react-three/drei";
 
-import { Perf } from "r3f-perf";
-import {
-  ChangeEvent,
-  forwardRef,
-  PointerEventHandler,
-  PropsWithChildren,
-  Suspense,
-} from "react";
-import Ecctrl, { EcctrlJoystick } from "ecctrl";
+import { Suspense } from "react";
 
-import Lights from "./Lights";
-import Map, { Instances } from "./Map";
-import CharacterModel from "./CharacterModel";
+import Map from "./Map";
+import { TwoCamerasInterchanged } from "./components/TwoCamerasInterchanged";
+import { Cube } from "./components/Cube";
+import { CharacterController } from "./components/CharacterControl";
 
 export default function App() {
   /**
@@ -35,38 +29,45 @@ export default function App() {
 
   return (
     <>
-      {/* For mobile devices */}
-      {/* <EcctrlJoystick /> */}
       <Canvas
         shadows
-        onPointerDown={(event?: any) => {
-          event.target.requestPointerLock();
-        }}
+        // onPointerDown={(event?: any) => event.target.requestPointerLock()}
       >
-        <Perf position="top-left" />
-        <Environment background files="/night.hdr" />
-        <Lights />
-        <KeyboardControls map={keyboardMap}>
-          <Physics timeStep="vary" debug>
-            <Suspense fallback={null}>
-              <Ecctrl
-                debug
-                camInitDir={{ x: 0.4, y: 0 }}
-                camInitDis={-2.0}
-                camLerpMult={1000}
-                camMinDis={-0.01}
-                camFollowMult={100}
-                turnVelMultiplier={1}
-                turnSpeed={100}
-                mode="CameraBasedMovement"
-              >
-                <CharacterModel />
-              </Ecctrl>
+        {/* <Perf position="top-left" /> */}
 
-              <Map scale={[3, 3, 3]} position={[0, -5, 0]} />
+        <Environment background files="/night.hdr" />
+        <directionalLight
+          intensity={0.65}
+          castShadow
+          position={[-15, 10, 15]}
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-bias={-0.00005}
+        >
+          <OrthographicCamera
+            left={-22}
+            right={15}
+            top={10}
+            bottom={-20}
+            attach={"shadow-camera"}
+          />
+        </directionalLight>
+        <Physics timeStep="vary">
+          <KeyboardControls map={keyboardMap}>
+            <Suspense fallback={null}>
+              <CharacterController />
+
+              <Map scale={[5, 5, 5]} position={[4, 0, 0]}>
+                <Box args={[1, 1, 1]} position={[-1, 0.5, -3]}>
+                  <meshStandardMaterial color="red" />
+                </Box>
+                <Cube />
+              </Map>
+
+              <TwoCamerasInterchanged />
             </Suspense>
-          </Physics>
-        </KeyboardControls>
+          </KeyboardControls>
+        </Physics>
       </Canvas>
     </>
   );
