@@ -1,18 +1,14 @@
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import {
-  Box,
-  Environment,
-  KeyboardControls,
-  OrthographicCamera,
-} from "@react-three/drei";
+import { Box, Environment, KeyboardControls } from "@react-three/drei";
 
 import { Suspense } from "react";
 
 import Map from "./Map";
 import { TwoCamerasInterchanged } from "./components/TwoCamerasInterchanged";
 import { Cube } from "./components/Cube";
-import { CharacterController } from "./components/CharacterControl";
+import Ecctrl, { EcctrlJoystick } from "ecctrl";
+import { Player } from "./components/CharacterModel";
 
 export default function App() {
   /**
@@ -29,12 +25,11 @@ export default function App() {
 
   return (
     <>
+      <EcctrlJoystick />
       <Canvas
         shadows
-        // onPointerDown={(event?: any) => event.target.requestPointerLock()}
+        onPointerDown={(event?: any) => event.target.requestPointerLock()}
       >
-        {/* <Perf position="top-left" /> */}
-
         <Environment background files="/night.hdr" />
         <directionalLight
           intensity={0.65}
@@ -43,19 +38,14 @@ export default function App() {
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-bias={-0.00005}
-        >
-          <OrthographicCamera
-            left={-22}
-            right={15}
-            top={10}
-            bottom={-20}
-            attach={"shadow-camera"}
-          />
-        </directionalLight>
+        ></directionalLight>
         <Physics timeStep="vary">
           <KeyboardControls map={keyboardMap}>
             <Suspense fallback={null}>
-              <CharacterController />
+              {/* <CharacterController /> */}
+              <Ecctrl name="character">
+                <Player />
+              </Ecctrl>
 
               <Map scale={[5, 5, 5]} position={[4, 0, 0]}>
                 <Box args={[1, 1, 1]} position={[-1, 0.5, -3]}>
