@@ -39,7 +39,6 @@ export function Frame({
 
     gl.setRenderTarget(null);
 
-    // @ts-expect-error - map is not defined in the type
     portalMaterialRef.current.map = renderTarget.texture;
   });
 
