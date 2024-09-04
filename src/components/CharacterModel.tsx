@@ -32,7 +32,7 @@ export function Player(props: {
 
   return (
     <group {...props} dispose={null}>
-      <group scale={0.0034} position={[0, -0.55, 0]}>
+      <group scale={0.0034} position={[0, 0, 0]}>
         <group
           position={[0, 155.777, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
